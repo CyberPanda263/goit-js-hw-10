@@ -4,14 +4,20 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script defer type="module" src="./js/1-timer.js"></script>
-    <title>Page 3</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/styles.css" />
+    <script defer type="module" src="./js/2-snackbar.js"></script>
+    <title>2-snackbar</title>
   </head>
   <body>
+    <section>
+      <div class="container">
     <form class="form">
-      <label>
+      <label class="input-ms">
         Delay (ms)
-        <input type="number" name="delay" required />
+        <input class="number" type="number" name="delay" required />
       </label>
     
       <fieldset>
@@ -26,8 +32,9 @@
         </label>
       </fieldset>
     
-      <button type="submit">Create notification</button>
+      <button class="submit" type="submit">Create notification</button>
     </form>
-    
+    </div>
+  </section>
   </body>
 </html>

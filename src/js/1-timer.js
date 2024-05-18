@@ -19,14 +19,21 @@ const options = {
       console.log(selectedDates[0]);
       userSelectedDate = selectedDates[0];
       if(userSelectedDate < date) {
-        iziToast.show({message: 'Please choose a date in the future'});
+        iziToast.show({
+          message: 'Please choose a date in the future',
+          position: 'topCenter',
+          backgroundColor: 'rgb(239, 64, 64)',
+          theme: 'dark',
+        });
       }else{
         start.disabled = false;
+        start.classList.remove('is-disable');
       }
     },
   };
 
   start.disabled = true;
+  start.classList = "is-disable";
 
   function convertMs(ms) {
     // Number of milliseconds per unit of time
@@ -48,17 +55,19 @@ const options = {
   }
 
 flatpickr(getDate, options);
+
 start.addEventListener("click", event => {
     start.disabled = true;
+    start.classList = "is-disable";
     getDate.disabled = true;
     ms = userSelectedDate.getTime() - date.getTime();
 
     const counting = setInterval(() => {
-      const getInterval = convertMs(ms);
-      document.querySelector('[data-days]').innerHTML = getInterval.days;
-      document.querySelector('[data-hours]').innerHTML = getInterval.hours;
-      document.querySelector('[data-minutes]').innerHTML = getInterval.minutes;
-      document.querySelector('[data-seconds]').innerHTML = getInterval.seconds;
+      const getingTime = convertMs(ms);
+      Object.keys(getingTime).forEach(key => {
+          const lengh = getingTime[key];
+          document.querySelector(`[data-${key}`).innerHTML = lengh.toString().length != 2 ? `0${getingTime[key]}`: getingTime[key];
+      })
       ms -= 1000;
   }, 1000);
   
@@ -66,6 +75,7 @@ start.addEventListener("click", event => {
     clearInterval(counting);
     start.disabled = false;
     getDate.disabled = false;
+    start.classList.remove('is-disable');
   }, ms + 1000);
 
 })
