@@ -6,7 +6,6 @@ const form = document.querySelector(".form");
 let value;
 let delay;
 let shouldResolve;
-let key;
 
 
 const makePromise = ({ value, delay, shouldResolve = true }) => {
@@ -21,24 +20,19 @@ const makePromise = ({ value, delay, shouldResolve = true }) => {
     });
 };
 
-form.addEventListener("input", event => {
-    const type = event.target.type;
-    if(type === "number") {
-        delay = event.target.value;
-    }
-    if(type === "radio") {
-        if(event.target.value === "fulfilled") {
-            value = `✅ Fulfilled promise in ${delay}ms`;
-            shouldResolve = true;
-        }else{
-            value = `❌ Rejected promise in ${delay}ms`;
-            shouldResolve = false;
-        }
-    }
-})
-
 form.addEventListener("submit", event => {
     event.preventDefault();
+
+    delay = form.elements.delay.value;
+
+    if(form.elements.state.value === "fulfilled") {
+        value = `✅ Fulfilled promise in ${delay}ms`;
+        shouldResolve = true;
+    }else{
+        value = `❌ Rejected promise in ${delay}ms`;
+        shouldResolve = false;
+    }
+    
     makePromise({ value, delay, shouldResolve})
     .then(value => {
         iziToast.show({
