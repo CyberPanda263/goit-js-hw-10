@@ -1,5 +1,7 @@
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
+import iziToast from "izitoast";
+import "izitoast/dist/css/iziToast.min.css";
 
 const getDate = document.querySelector("#datetime-picker");
 const start = document.querySelector("button");
@@ -17,32 +19,16 @@ const options = {
       console.log(selectedDates[0]);
       userSelectedDate = selectedDates[0];
       if(userSelectedDate < date) {
-        window.alert("Please choose a date in the future");
+        iziToast.show({message: 'Please choose a date in the future'});
       }else{
         start.disabled = false;
       }
     },
   };
 
-start.disabled = true;
+  start.disabled = true;
 
-flatpickr(getDate, options);
-
-start.addEventListener("click", event => {
-    start.disabled = true;
-    getDate.disabled = true;
-    ms = userSelectedDate.getTime() - date.getTime();
-    const timer = setInterval(() => {
-        let days;
-        let hours;
-        let minutes;
-        let seconds;
-        convertMs(ms);
-        console.log(`${days} ${hours} ${minutes} ${seconds}`);
-    }, 1000);
-})
-
-function convertMs(ms) {
+  function convertMs(ms) {
     // Number of milliseconds per unit of time
     const second = 1000;
     const minute = second * 60;
@@ -61,7 +47,26 @@ function convertMs(ms) {
     return { days, hours, minutes, seconds };
   }
 
-const timer = setInterval(() => {
-    convertMs(ms)
-}, 1000);
+flatpickr(getDate, options);
+start.addEventListener("click", event => {
+    start.disabled = true;
+    getDate.disabled = true;
+    ms = userSelectedDate.getTime() - date.getTime();
+
+    const counting = setInterval(() => {
+      const getInterval = convertMs(ms);
+      document.querySelector('[data-days]').innerHTML = getInterval.days;
+      document.querySelector('[data-hours]').innerHTML = getInterval.hours;
+      document.querySelector('[data-minutes]').innerHTML = getInterval.minutes;
+      document.querySelector('[data-seconds]').innerHTML = getInterval.seconds;
+      ms -= 1000;
+  }, 1000);
+  
+  setTimeout(() => {
+    clearInterval(counting);
+    start.disabled = false;
+    getDate.disabled = false;
+  }, ms + 1000);
+
+})
   
